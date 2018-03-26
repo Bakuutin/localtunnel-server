@@ -1,57 +1,63 @@
 #!/usr/bin/env node
 
+// @flow
+
 require('localenv');
 require('babel-register');
 
-const log = require('book');
 const debug = require('debug')('localtunnel');
 const optimist = require('optimist');
 
 const argv = optimist
-    .usage('Usage: $0 --port [num]')
-    .options('secure', {
-        default: false,
-        describe: 'use this flag to indicate proxy over https'
-    })
-    .options('port', {
-        default: '80',
-        describe: 'listen on this port for outside requests'
-    })
-    .options('max-sockets', {
-        default: 10,
-        describe: 'maximum number of tcp sockets each client is allowed to establish at one time (the tunnels)'
-    })
-    .argv;
+  .usage('Usage: $0 --port [num]')
+  .options('secure', {
+    default: process.env.SECURE == 'true',
+    describe: 'use this flag to indicate proxy over https',
+  })
+  .options('port', {
+    default: process.env.PORT || '80',
+    describe: 'listen on this port for outside requests',
+  })
+  .options('level', {
+    default: process.env.LEVEL || 2,
+    describe: 'client-ids are encoded as nth-level domain',
+  })
+  .options('homepage', {
+    default: process.env.HOMEPAGE || 'https://localtunnel.github.io/www/',
+    describe: 'redirect target when "/" is requested',
+  })
+  .options('max-sockets', {
+    default: process.env.MAX_SOCKETS || 10,
+    describe:
+      'maximum number of tcp sockets each client is allowed to establish at one time (the tunnels)',
+  }).argv;
 
 if (argv.help) {
-    optimist.showHelp();
-    process.exit();
+  optimist.showHelp();
+  process.exit();
 }
 
 const server = require('../server')({
-    max_tcp_sockets: argv['max-sockets'],
-    secure: argv.secure
+  max_tcp_sockets: argv['max-sockets'],
+  secure: argv.secure,
 });
 
 server.listen(argv.port, () => {
-    debug('server listening on port: %d', server.address().port);
+  debug('server listening on port: %d', server.address().port);
 });
 
 process.on('SIGINT', () => {
-    process.exit();
+  process.exit();
 });
 
 process.on('SIGTERM', () => {
-    process.exit();
+  process.exit();
 });
 
-process.on('uncaughtException', (err) => {
-    log.error(err);
+process.on('uncaughtException', err => {
+  console.error(err);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
-    log.error(reason);
+process.on('unhandledRejection', reason => {
+  console.error(reason);
 });
-
-// vim: ft=javascript
-

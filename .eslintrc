@@ -1,0 +1,6 @@
+{
+  "extends": ["cellular"],
+  "env": {
+    "mocha": true
+  }
+}
