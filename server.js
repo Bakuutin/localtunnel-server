@@ -12,16 +12,16 @@ import type { ClientManagerOptions } from './lib/ClientManager';
 
 type ServerOptions = { 
   secure?: boolean,
+  homepage?: string,
   level?: number,
-  homepage?: string
 }
 
-type Options = ClientManagerOptions & ServerOptions
+type Opts = ClientManagerOptions & ServerOptions
 */
 
 const debug = Debug('localtunnel:server');
 
-module.exports = function(opt /*: Options */ = {}) {
+module.exports = function(opt /*: Opts */ = {}) {
   const manager = new ClientManager(opt);
 
   const schema = opt.secure ? 'https' : 'http';
