@@ -19,7 +19,7 @@ const argv = optimist
     describe: 'listen on this port for outside requests',
   })
   .options('level', {
-    default: process.env.LEVEL || 2,
+    default: process.env.LEVEL || '2',
     describe: 'client-ids are encoded as nth-level domain',
   })
   .options('homepage', {
@@ -27,7 +27,7 @@ const argv = optimist
     describe: 'redirect target when "/" is requested',
   })
   .options('max-sockets', {
-    default: process.env.MAX_SOCKETS || 10,
+    default: process.env.MAX_SOCKETS || '10',
     describe:
       'maximum number of tcp sockets each client is allowed to establish at one time (the tunnels)',
   }).argv;
@@ -38,8 +38,10 @@ if (argv.help) {
 }
 
 const server = require('../server')({
-  max_tcp_sockets: argv['max-sockets'],
-  secure: argv.secure,
+  max_tcp_sockets: Number(argv['max-sockets']),
+  level: Number(argv.level),
+  secure: !!argv.secure,
+  homepage: argv.homepage,
 });
 
 server.listen(argv.port, () => {
