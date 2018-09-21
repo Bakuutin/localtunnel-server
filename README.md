@@ -1,7 +1,5 @@
 # localtunnel-server
 
-[![Build Status](https://travis-ci.org/cellular/localtunnel-server.svg?branch=master)](https://travis-ci.org/cellular/localtunnel-server)
-
 This is a fork of [localtunnel/server](https://github.com/localtunnel/server) that supports second-level as well as third-level domains.
 
 ## Additional Options
@@ -17,5 +15,5 @@ Alternatively you can provide these options by setting the `LEVEL` and `HOMEPAGE
 
 * `/api/status` can be requested without a (valid) host header to support AWS health checks.
 * The server port defaults to `process.env.PORT`.
-* Static typings have been added via flow. 
+* Static typings have been added via flow.
 * Code is formatted with prettier and refactored to ES6.

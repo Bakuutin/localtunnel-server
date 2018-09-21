@@ -10,7 +10,7 @@ import { getClientId, generateClientId } from './lib/clientId';
 /*::
 import type { ClientManagerOptions } from './lib/ClientManager';
 
-type ServerOptions = { 
+type ServerOptions = {
   secure?: boolean,
   homepage?: string,
   level?: number,
